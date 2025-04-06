@@ -1,0 +1,323 @@
+.hanja-dictionary {
+  width: 100%;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.search-options {
+  display: flex;
+  gap: 10px;
+}
+
+.dropdown-container {
+  position: relative;
+  flex: 1;
+}
+
+.selected-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #e8f0fe;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-arrow {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.options-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 4px;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.option-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.option-item:last-child {
+  border-bottom: none;
+}
+
+.option-item:hover {
+  background-color: #f5f5f5;
+}
+
+.radio-button {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #3b82f6;
+  margin-right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+}
+
+.search-button {
+  padding: 10px 16px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  flex: 1;
+  max-width: 100px;
+}
+
+.search-button:hover {
+  background-color: #2563eb;
+}
+
+.search-results {
+  margin-bottom: 20px;
+}
+
+.results-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.tone-group {
+  margin-bottom: 20px;
+}
+
+.tone-title {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.tone-indicator {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.ping {
+  background-color: #ffaa55;
+}
+
+.ceok {
+  background-color: #5599ff;
+}
+
+.dual {
+  background-color: #ff5555;
+}
+
+/* 간략 표시 스타일 */
+.simplified-results {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.simplified-hanja-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 60px;
+  transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.simplified-hanja-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-color: #3b82f6;
+}
+
+.simplified-hanja-item.dual {
+  border-color: #ff5555;
+}
+
+.simplified-hanja-item.dual:hover {
+  border-color: #ff3333;
+  box-shadow: 0 2px 5px rgba(255,51,51,0.2);
+}
+
+.simplified-hanja-item .hanja-char {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.simplified-hanja-item .hanja-pronunciation {
+  font-size: 12px;
+  color: #666;
+}
+
+/* 상세 정보 스타일 */
+.hanja-detail {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 30px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.detail-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.detail-header {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.detail-character {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 20px;
+  background-color: #f9f9f9;
+}
+
+.detail-character span {
+  font-size: 48px;
+}
+
+.detail-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.detail-pronunciation {
+  margin-bottom: 10px;
+}
+
+.tone-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.tone-badge.ping {
+  background-color: #ffaa55;
+  color: #000;
+}
+
+.tone-badge.ceok {
+  background-color: #5599ff;
+  color: #fff;
+}
+
+.tone-badge.dual {
+  background-color: #ff5555;
+  color: #fff;
+}
+
+.detail-rhyme {
+  margin-bottom: 10px;
+}
+
+.rhyme-value {
+  font-weight: 500;
+}
+
+.detail-id {
+  color: #666;
+  font-size: 14px;
+}
+
+.detail-meanings {
+  margin-top: 20px;
+}
+
+.meanings-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.meanings-list {
+  line-height: 1.6;
+  color: #333;
+}
+
+.meaning-item {
+  display: inline;
+}
+
+.back-to-results {
+  display: block;
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: center;
+}
+
+.back-to-results:hover {
+  background-color: #e0e0e0;
+}
+
+.no-results {
+  text-align: center;
+  padding: 30px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  color: #666;
+}
