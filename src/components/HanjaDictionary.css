@@ -1,5 +1,7 @@
 .hanja-dictionary {
   width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .search-container {
@@ -7,6 +9,7 @@
   flex-direction: column;
   margin-bottom: 20px;
   gap: 10px;
+  width: 100%;
 }
 
 /* 검색 입력창 래퍼 추가 */
@@ -21,7 +24,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  padding-right: 30px; /* 삭제 버튼을 위한 공간 */
+  padding-right: 40px; /* 삭제 버튼을 위한 공간 증가 */
+  box-sizing: border-box; /* 너비 계산에 패딩 포함 */
 }
 
 /* 검색어 지우기 버튼 스타일 */
@@ -32,12 +36,12 @@
   transform: translateY(-50%);
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 24px; /* X 크기 증가 */
   color: #999;
   cursor: pointer;
   padding: 0;
-  width: 20px;
-  height: 20px;
+  width: 30px; /* 너비 증가 */
+  height: 30px; /* 높이 증가 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,11 +56,12 @@
 .search-options {
   display: flex;
   gap: 10px;
+  width: 100%;
 }
 
 .dropdown-container {
-  position: relative;
   flex: 1;
+  position: relative;
 }
 
 .selected-option {
@@ -68,6 +73,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .dropdown-arrow {
@@ -130,8 +137,10 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  flex: 0 0 auto;
   min-width: 80px;
+  max-width: 120px; /* 최대 너비 제한 */
+  width: 100px; /* 고정 너비 설정 */
+  flex: 0 0 auto; /* 크기 고정 */
 }
 
 .search-button:hover {
@@ -357,10 +366,17 @@
 /* 미디어 쿼리로 모바일 대응 */
 @media (max-width: 768px) {
   .search-options {
-    flex-direction: column;
+    flex-direction: row; /* 가로 방향 유지 */
+    align-items: stretch;
   }
   
   .search-button {
-    width: 100%;
+    width: auto; /* 너비 자동 조정 */
+    min-width: 80px;
+    max-width: 120px;
+  }
+  
+  .dropdown-container {
+    flex: 3; /* 드롭다운이 더 많은 공간 차지 */
   }
 }
