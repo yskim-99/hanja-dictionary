@@ -16,6 +16,7 @@
 .search-input-wrapper {
   position: relative;
   width: 100%;
+  display: block; /* 추가 */
 }
 
 .search-input {
@@ -26,6 +27,7 @@
   font-size: 16px;
   padding-right: 40px; /* 삭제 버튼을 위한 공간 증가 */
   box-sizing: border-box; /* 너비 계산에 패딩 포함 */
+  display: block; /* 추가 */
 }
 
 /* 검색어 지우기 버튼 스타일 */
@@ -46,6 +48,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  z-index: 5; /* 추가 */
 }
 
 .clear-search-button:hover {
@@ -57,6 +60,7 @@
   display: flex;
   gap: 10px;
   width: 100%;
+  align-items: stretch; /* 추가 */
 }
 
 .dropdown-container {
@@ -75,6 +79,7 @@
   cursor: pointer;
   width: 100%;
   box-sizing: border-box;
+  height: 100%; /* 추가 */
 }
 
 .dropdown-arrow {
@@ -138,7 +143,7 @@
   cursor: pointer;
   font-size: 16px;
   min-width: 80px;
-  max-width: 120px; /* 최대 너비 제한 */
+  max-width: 100px; /* 최대 너비 제한 */
   width: 100px; /* 고정 너비 설정 */
   flex: 0 0 auto; /* 크기 고정 */
 }
@@ -363,17 +368,12 @@
   color: #666;
 }
 
-/* 미디어 쿼리로 모바일 대응 */
+/* 미디어 쿼리 없이 기본 스타일로 적용 */
+/* 모바일 미디어 쿼리는 이미 모바일에서 잘 작동하므로 유지 */
 @media (max-width: 768px) {
   .search-options {
     flex-direction: row; /* 가로 방향 유지 */
     align-items: stretch;
-  }
-  
-  .search-button {
-    width: auto; /* 너비 자동 조정 */
-    min-width: 80px;
-    max-width: 120px;
   }
   
   .dropdown-container {
