@@ -42,6 +42,11 @@ const HanjaDictionary = ({ hanjaData }) => {
     setSelectedHanja(null);
   };
 
+  // 검색어 초기화 처리
+  const handleClearSearch = () => {
+    setSearchTerm('');
+  };
+
   // 검색 입력 시 엔터키 처리
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
@@ -96,14 +101,25 @@ const HanjaDictionary = ({ hanjaData }) => {
     <div className="hanja-dictionary">
       {/* 검색 영역 */}
       <div className="search-container">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="검색어 입력..."
-          className="search-input"
-        />
+        <div className="search-input-wrapper">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="검색어 입력..."
+            className="search-input"
+          />
+          {searchTerm && (
+            <button 
+              className="clear-search-button" 
+              onClick={handleClearSearch}
+              aria-label="검색어 지우기"
+            >
+              ×
+            </button>
+          )}
+        </div>
         
         <div className="search-options">
           <div className="dropdown-container">
