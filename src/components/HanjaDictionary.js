@@ -29,9 +29,18 @@ const HanjaDictionary = ({ hanjaData }) => {
         );
         break;
       case '운목(韻目)':
-        results = hanjaData.filter(hanja => 
-          hanja.rhymeCategory === term || hanja.rhymeCategory === '共'
-        );
+        // 수정된 부분: 특정 운목을 검색하는 경우와 '共'을 검색하는 경우 구분
+        if (term === '共') {
+          // '共'을 검색하는 경우 평측겸용자만 표시
+          results = hanjaData.filter(hanja => 
+            hanja.rhymeCategory === '共'
+          );
+        } else {
+          // 특정 운목을 검색하는 경우, 해당 운목만 정확히 일치하는 항목 표시
+          results = hanjaData.filter(hanja => 
+            hanja.rhymeCategory === term && hanja.rhymeCategory !== '共'
+          );
+        }
         break;
       default:
         break;
