@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/hanja-dictionary/static/css/main.e4652069.css",
+    "main.css": "/hanja-dictionary/static/css/main.06761e7d.css",
     "main.js": "/hanja-dictionary/static/js/main.3f4733b9.js",
     "static/js/453.5fcc835a.chunk.js": "/hanja-dictionary/static/js/453.5fcc835a.chunk.js",
     "index.html": "/hanja-dictionary/index.html",
-    "main.e4652069.css.map": "/hanja-dictionary/static/css/main.e4652069.css.map",
+    "main.06761e7d.css.map": "/hanja-dictionary/static/css/main.06761e7d.css.map",
     "main.3f4733b9.js.map": "/hanja-dictionary/static/js/main.3f4733b9.js.map",
     "453.5fcc835a.chunk.js.map": "/hanja-dictionary/static/js/453.5fcc835a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e4652069.css",
+    "static/css/main.06761e7d.css",
     "static/js/main.3f4733b9.js"
   ]
 }
