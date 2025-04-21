@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './HanjaDictionary.css';
 
 const HanjaDictionary = ({ hanjaData }) => {
@@ -7,6 +7,8 @@ const HanjaDictionary = ({ hanjaData }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedHanja, setSelectedHanja] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
+  // 검색 입력 필드에 대한 참조 추가
+  const searchInputRef = useRef(null);
   
   // 검색 처리
   const handleSearch = () => {
@@ -36,9 +38,9 @@ const HanjaDictionary = ({ hanjaData }) => {
             hanja.rhymeCategory === '共'
           );
         } else {
-          // 특정 운목을 검색하는 경우, 해당 운목만 정확히 일치하는 항목 표시
+          // 수정: 운목에 검색어가 포함된 모든 항목을 표시 (1글자 이상의 운목도 포함)
           results = hanjaData.filter(hanja => 
-            hanja.rhymeCategory === term && hanja.rhymeCategory !== '共'
+            hanja.rhymeCategory.includes(term) && hanja.rhymeCategory !== '共'
           );
         }
         break;
@@ -54,6 +56,10 @@ const HanjaDictionary = ({ hanjaData }) => {
   // 검색어 초기화 처리
   const handleClearSearch = () => {
     setSearchTerm('');
+    // 검색창에 포커스 주기
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
   };
 
   // 검색 입력 시 엔터키 처리
@@ -118,6 +124,7 @@ const HanjaDictionary = ({ hanjaData }) => {
             onKeyPress={handleKeyPress}
             placeholder="검색어 입력..."
             className="search-input"
+            ref={searchInputRef} // ref 추가
           />
           {searchTerm && (
             <button 
