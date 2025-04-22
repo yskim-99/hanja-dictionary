@@ -36,7 +36,6 @@ function App() {
         if (hasEncodingIssue) {
           console.log("인코딩 문제 감지, 다른 인코딩으로 시도합니다.");
           // 여기서는 인코딩 변환을 시뮬레이션합니다
-          // 실제로는 TextDecoder 등을 사용해 다양한 인코딩을 시도해야 합니다
         }
         
         // TSV 파일 파싱
@@ -82,73 +81,6 @@ function App() {
     
     loadDefaultData();
   }, []);
-  
-  // 파일 업로드 처리
-  const handleFileUpload = (file) => {
-    if (!file) return;
-    
-    setLoading(true);
-    setError(null);
-    
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const text = event.target.result;
-        
-        // 파일이 CSV인지 TSV인지 자동 감지
-        const firstLine = text.split('\n')[0];
-        const delimiter = firstLine.includes('\t') ? '\t' : ',';
-        
-        console.log(`파일 구분자: ${delimiter === '\t' ? 'Tab(TSV)' : 'Comma(CSV)'}`);
-        
-        // 파일 파싱
-        const lines = text.trim().split('\n');
-        const headers = lines[0].split(delimiter);
-        
-        // 헤더 검증
-        const requiredFields = ['id', 'pronunciation', 'character', 'tone', 'rhymeCategory', 'meanings'];
-        const headerValid = requiredFields.every(field => 
-          headers.some(h => h.toLowerCase().includes(field.toLowerCase()))
-        );
-        
-        if (!headerValid) {
-          throw new Error('필수 필드가 누락되었습니다. 파일 형식을 확인하세요.');
-        }
-        
-        // 데이터 매핑
-        const parsedData = [];
-        for (let i = 1; i < lines.length; i++) {
-          const values = lines[i].split(delimiter);
-          if (values.length >= 5) {
-            parsedData.push({
-              id: parseInt(values[0]) || i,
-              pronunciation: values[1] || '',
-              character: values[2] || '',
-              tone: values[3] || '',
-              rhymeCategory: values[4] || '',
-              meanings: values.slice(5).join(delimiter) || ''
-            });
-          }
-        }
-        
-        setHanjaData(parsedData);
-        setFileLoaded(true);
-        setLoading(false);
-        console.log(`${parsedData.length}개의 한자 데이터를 로드했습니다.`);
-      } catch (err) {
-        console.error('파일 파싱 오류:', err);
-        setError(err.message || '파일 형식이 올바르지 않습니다.');
-        setLoading(false);
-      }
-    };
-    
-    reader.onerror = () => {
-      setError('파일을 읽는 중 오류가 발생했습니다.');
-      setLoading(false);
-    };
-    
-    reader.readAsText(file);
-  };
 
   return (
     <div className="App">
@@ -161,16 +93,7 @@ function App() {
       
       {error && <div className="error-message">{error}</div>}
       
-      <div className="file-upload-container">
-        <label className="file-upload-label">
-          <input 
-            type="file" 
-            accept=".tsv,.csv,.txt" 
-            onChange={(e) => handleFileUpload(e.target.files[0])}
-            className="file-input"
-          />
-        </label>
-      </div>
+      {/* 파일 업로드 부분 제거 */}
       
       {fileLoaded && !loading && (
         <HanjaDictionary hanjaData={hanjaData} />
