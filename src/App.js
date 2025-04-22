@@ -163,7 +163,6 @@ function App() {
       
       <div className="file-upload-container">
         <label className="file-upload-label">
-          데이터 파일 업로드 (TSV/CSV)
           <input 
             type="file" 
             accept=".tsv,.csv,.txt" 
