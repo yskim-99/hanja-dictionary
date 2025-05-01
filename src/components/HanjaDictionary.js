@@ -102,7 +102,16 @@ const HanjaDictionary = ({ hanjaData }) => {
 
   // 결과 정렬 (평성, 측성, 공용 순으로)
   const sortedResults = [...searchResults].sort((a, b) => {
-    return getToneGroup(a.tone) - getToneGroup(b.tone);
+    // 먼저 성조 그룹으로 정렬
+    const toneGroupA = getToneGroup(a.tone);
+    const toneGroupB = getToneGroup(b.tone);
+    
+    if (toneGroupA !== toneGroupB) {
+      return toneGroupA - toneGroupB;
+    }
+    
+    // 같은 성조 그룹 내에서 발음(音)의 가나다 순으로 정렬
+    return a.pronunciation.localeCompare(b.pronunciation, 'ko');
   });
 
   // 성조에 따른 CSS 클래스
