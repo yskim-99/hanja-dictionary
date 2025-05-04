@@ -24,11 +24,16 @@ const HanjaDictionary = ({ hanjaData }) => {
         );
         break;
       case '의미(訓)':
-        results = hanjaData.filter(hanja => 
-          hanja.meanings.split(';').some(meaning => 
-            meaning.includes(term)
-          )
-        );
+        results = hanjaData.filter(hanja => {
+          // 의미를 세미콜론으로 분리하여 각 의미별로 확인
+          const meanings = hanja.meanings.split(';');
+          
+          // 정확히 일치하는 의미가 있는지 확인
+          return meanings.some(meaning => {
+            // 양쪽 공백을 제거하고 정확히 일치하는지 확인
+            return meaning.trim() === term;
+          });
+        });
         break;
       case '운목(韻目)':
         // 수정된 부분: 특정 운목을 검색하는 경우와 '共'을 검색하는 경우 구분
