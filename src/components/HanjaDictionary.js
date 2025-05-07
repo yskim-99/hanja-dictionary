@@ -28,11 +28,64 @@ const HanjaDictionary = ({ hanjaData }) => {
           // 의미를 세미콜론으로 분리하여 각 의미별로 확인
           const meanings = hanja.meanings.split(';');
           
-          // 정확히 일치하는 의미가 있는지 확인
+          // 검색어로 시작하는 의미가 있는지 확인
           return meanings.some(meaning => {
-            // 양쪽 공백을 제거하고 정확히 일치하는지 확인
-            return meaning.trim() === term;
+            const cleanMeaning = meaning.trim();
+            
+            // 1. 정확히 일치하는 경우
+            if (cleanMeaning === term) return true;
+            
+            // 2. 검색어 + 괄호로 시작하는 경우 (예: '절' → '절(寺)')
+            if (cleanMeaning.startsWith(term + '(')) return true;
+            
+            // 3. 검색어 + 공백으로 시작하는 경우 (예: '홀로' → '홀로 가다')
+            if (cleanMeaning.startsWith(term + ' ')) return true;
+            
+            // 4. 띄어쓰기 차이 처리
+            // 띄어쓰기를 제거한 의미가 띄어쓰기를 제거한 검색어와 동일한 경우
+            const noSpaceMeaning = cleanMeaning.replace(/\s+/g, '');
+            const noSpaceTerm = term.replace(/\s+/g, '');
+            if (noSpaceMeaning === noSpaceTerm) return true;
+            
+            // 5. 검색어에 띄어쓰기가 있는 경우 처리 (예: '들어 올리다' → '들어올리다')
+            // 띄어쓰기를 제거한 의미가 띄어쓰기를 제거한 검색어로 시작하는 경우
+            if (term.includes(' ') && noSpaceMeaning.startsWith(noSpaceTerm)) {
+              // 원래 의미가 검색어의 길이보다 길지 않은지 확인
+              // 검색어 뒤에 다른 문자가 붙지 않도록
+              if (noSpaceMeaning.length <= noSpaceTerm.length + 2) return true;
+            }
+            
+            return false;
           });
+        });
+        
+        // 검색 결과 정렬 (관련성 높은 순)
+        results.sort((a, b) => {
+          const meaningsA = a.meanings.split(';');
+          const meaningsB = b.meanings.split(';');
+          
+          // a의 관련성 점수 계산
+          const relevanceA = Math.max(...meaningsA.map(meaning => {
+            const cleanMeaning = meaning.trim();
+            if (cleanMeaning === term) return 4; // 완전 일치
+            if (cleanMeaning.startsWith(term + '(')) return 3; // 괄호 포함
+            if (cleanMeaning.startsWith(term + ' ')) return 2; // 공백 포함
+            if (cleanMeaning.replace(/\s+/g, '') === term.replace(/\s+/g, '')) return 1; // 띄어쓰기 차이
+            return 0;
+          }));
+          
+          // b의 관련성 점수 계산
+          const relevanceB = Math.max(...meaningsB.map(meaning => {
+            const cleanMeaning = meaning.trim();
+            if (cleanMeaning === term) return 4; // 완전 일치
+            if (cleanMeaning.startsWith(term + '(')) return 3; // 괄호 포함
+            if (cleanMeaning.startsWith(term + ' ')) return 2; // 공백 포함
+            if (cleanMeaning.replace(/\s+/g, '') === term.replace(/\s+/g, '')) return 1; // 띄어쓰기 차이
+            return 0;
+          }));
+          
+          // 관련성 점수로 정렬 (내림차순)
+          return relevanceB - relevanceA;
         });
         break;
       case '운목(韻目)':
