@@ -28,6 +28,9 @@ const HanjaDictionary = ({ hanjaData }) => {
           // 의미를 세미콜론으로 분리하여 각 의미별로 확인
           const meanings = hanja.meanings.split(';');
           
+          // 전처리된 검색어 만들기
+          const noSpaceTerm = term.replace(/\s+/g, ''); // 공백 제거
+          
           // 검색어로 시작하는 의미가 있는지 확인
           return meanings.some(meaning => {
             const cleanMeaning = meaning.trim();
@@ -41,17 +44,31 @@ const HanjaDictionary = ({ hanjaData }) => {
             // 3. 검색어 + 공백으로 시작하는 경우 (예: '홀로' → '홀로 가다')
             if (cleanMeaning.startsWith(term + ' ')) return true;
             
-            // 4. 띄어쓰기 차이 처리
-            // 띄어쓰기를 제거한 의미가 띄어쓰기를 제거한 검색어와 동일한 경우
+            // 4. 전처리된 의미 생성 (괄호 제거, 공백 제거, 가운뎃점 제거)
+            // a. 모든 괄호와 그 내용 제거 (예: '안치(安置)하다' → '안치하다')
+            let processedMeaning = cleanMeaning.replace(/\([^)]*\)/g, '');
+            // b. 가운뎃점 제거 (예: '남녀·자웅의' → '남녀자웅의')
+            processedMeaning = processedMeaning.replace(/·/g, '');
+            // c. 공백 제거
+            processedMeaning = processedMeaning.replace(/\s+/g, '');
+            
+            // 5. 전처리된 의미와 전처리된 검색어 비교
+            // 5-1. 정확히 일치하는 경우
+            if (processedMeaning === noSpaceTerm) return true;
+            
+            // 5-2. 전처리된 의미가 전처리된 검색어로 시작하는 경우
+            if (processedMeaning.startsWith(noSpaceTerm)) {
+              // 검색어 뒤에 다른 문자가 있는지 확인 (접두어 검색)
+              // 예: '안치하다'로 검색했을 때 '안치하다', '안치하다가' 등이 포함됨
+              return true;
+            }
+            
+            // 6. 원본 의미에서 띄어쓰기 차이만 처리
             const noSpaceMeaning = cleanMeaning.replace(/\s+/g, '');
-            const noSpaceTerm = term.replace(/\s+/g, '');
             if (noSpaceMeaning === noSpaceTerm) return true;
             
-            // 5. 검색어에 띄어쓰기가 있는 경우 처리 (예: '들어 올리다' → '들어올리다')
-            // 띄어쓰기를 제거한 의미가 띄어쓰기를 제거한 검색어로 시작하는 경우
+            // 7. 검색어에 띄어쓰기가 있는 경우 처리 (예: '들어 올리다' → '들어올리다')
             if (term.includes(' ') && noSpaceMeaning.startsWith(noSpaceTerm)) {
-              // 원래 의미가 검색어의 길이보다 길지 않은지 확인
-              // 검색어 뒤에 다른 문자가 붙지 않도록
               if (noSpaceMeaning.length <= noSpaceTerm.length + 2) return true;
             }
             
@@ -64,25 +81,36 @@ const HanjaDictionary = ({ hanjaData }) => {
           const meaningsA = a.meanings.split(';');
           const meaningsB = b.meanings.split(';');
           
-          // a의 관련성 점수 계산
-          const relevanceA = Math.max(...meaningsA.map(meaning => {
+          // 관련성 점수 계산 함수
+          const calculateRelevance = (meaning) => {
             const cleanMeaning = meaning.trim();
-            if (cleanMeaning === term) return 4; // 완전 일치
-            if (cleanMeaning.startsWith(term + '(')) return 3; // 괄호 포함
-            if (cleanMeaning.startsWith(term + ' ')) return 2; // 공백 포함
-            if (cleanMeaning.replace(/\s+/g, '') === term.replace(/\s+/g, '')) return 1; // 띄어쓰기 차이
+            
+            // 정확히 일치하는 경우
+            if (cleanMeaning === term) return 5;
+            
+            // 검색어 + 괄호로 시작하는 경우 (예: '절' → '절(寺)')
+            if (cleanMeaning.startsWith(term + '(')) return 4;
+            
+            // 검색어 + 공백으로 시작하는 경우 (예: '홀로' → '홀로 가다')
+            if (cleanMeaning.startsWith(term + ' ')) return 3;
+            
+            // 괄호나 가운뎃점 제거 후 일치하는 경우
+            let processedMeaning = cleanMeaning.replace(/\([^)]*\)/g, '').replace(/·/g, '').replace(/\s+/g, '');
+            const noSpaceTerm = term.replace(/\s+/g, '');
+            
+            if (processedMeaning === noSpaceTerm) return 2;
+            
+            // 띄어쓰기 차이만 있는 경우
+            if (cleanMeaning.replace(/\s+/g, '') === noSpaceTerm) return 1;
+            
             return 0;
-          }));
+          };
+          
+          // a의 관련성 점수 계산
+          const relevanceA = Math.max(...meaningsA.map(calculateRelevance));
           
           // b의 관련성 점수 계산
-          const relevanceB = Math.max(...meaningsB.map(meaning => {
-            const cleanMeaning = meaning.trim();
-            if (cleanMeaning === term) return 4; // 완전 일치
-            if (cleanMeaning.startsWith(term + '(')) return 3; // 괄호 포함
-            if (cleanMeaning.startsWith(term + ' ')) return 2; // 공백 포함
-            if (cleanMeaning.replace(/\s+/g, '') === term.replace(/\s+/g, '')) return 1; // 띄어쓰기 차이
-            return 0;
-          }));
+          const relevanceB = Math.max(...meaningsB.map(calculateRelevance));
           
           // 관련성 점수로 정렬 (내림차순)
           return relevanceB - relevanceA;
