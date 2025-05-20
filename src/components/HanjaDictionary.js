@@ -7,10 +7,8 @@ const HanjaDictionary = ({ hanjaData }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedHanja, setSelectedHanja] = useState(null);
   const [showOptions, setShowOptions] = useState(false);
-  // 검색 입력 필드에 대한 참조 추가
   const searchInputRef = useRef(null);
   
-  // 검색 처리
   const handleSearch = () => {
     if (!searchTerm.trim()) return;
     
@@ -117,14 +115,14 @@ const HanjaDictionary = ({ hanjaData }) => {
         });
         break;
       case '운목(韻目)':
-        // 수정된 부분: 특정 운목을 검색하는 경우와 '共'을 검색하는 경우 구분
+        // 특정 운목을 검색하는 경우와 '共'을 검색하는 경우 구분
         if (term === '共') {
           // '共'을 검색하는 경우 평측겸용자만 표시
           results = hanjaData.filter(hanja => 
             hanja.rhymeCategory === '共'
           );
         } else {
-          // 수정: 운목에 검색어가 포함된 모든 항목을 표시 (1글자 이상의 운목도 포함)
+          // 운목에 검색어가 포함된 모든 항목을 표시 (1글자 이상의 운목도 포함)
           results = hanjaData.filter(hanja => 
             hanja.rhymeCategory.includes(term) && hanja.rhymeCategory !== '共'
           );
@@ -219,7 +217,7 @@ const HanjaDictionary = ({ hanjaData }) => {
             onKeyPress={handleKeyPress}
             placeholder="검색어 입력..."
             className="search-input"
-            ref={searchInputRef} // ref 추가
+            ref={searchInputRef}
           />
           {searchTerm && (
             <button 
@@ -315,83 +313,6 @@ const HanjaDictionary = ({ hanjaData }) => {
                   .filter(hanja => hanja.tone === '平')
                   .map(hanja => (
                     <div 
-                      key={hanja.id}
-                      onClick={() => handleHanjaSelect(hanja)}
-                      className="simplified-hanja-item dual"
-                    >
-                      <span className="hanja-char">{hanja.character}</span>
-                      <span className="hanja-pronunciation">({hanja.pronunciation} - 평측겸용)</span>
-                    </div>
-                  ))
-                }
-              </div>
-            </div>
-          )}
-        </div>
-      ) : searchTerm || (searchType === '필기인식' && recognizedChars.length === 0) ? (
-        <div className="no-results">
-          <p>
-            {searchType === '필기인식' 
-              ? '한자를 그리고 인식 버튼을 눌러주세요.'
-              : '검색 결과가 없습니다!'}
-          </p>
-        </div>
-      ) : null}
-      
-      {/* 한자 상세 정보 */}
-      {selectedHanja && (
-        <div className="hanja-detail">
-          <h2 className="detail-title">한자 상세 정보</h2>
-          
-          <div className="detail-header">
-            <div className="detail-character">
-              <span>{selectedHanja.character}</span>
-            </div>
-            
-            <div className="detail-info">
-              <div className="detail-pronunciation">
-                <span className={`tone-badge ${getToneClass(selectedHanja.tone)}`}>
-                  {selectedHanja.pronunciation} ({getToneDisplay(selectedHanja.tone)})
-                </span>
-              </div>
-              
-              <div className="detail-rhyme">
-                운목(韻目): <span className="rhyme-value">{selectedHanja.rhymeCategory}</span>
-              </div>
-              
-              <div className="detail-id">
-                ID: <span>{selectedHanja.id}</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="detail-meanings">
-            <h3 className="meanings-title">
-              의미(訓) - 전체 {selectedHanja.meanings.split(';').length}개
-            </h3>
-            <p className="meanings-list">
-              {selectedHanja.meanings.split(';').map((meaning, idx) => (
-                <span key={idx} className="meaning-item">
-                  {meaning}
-                  {idx < selectedHanja.meanings.split(';').length - 1 && ", "}
-                </span>
-              ))}
-            </p>
-          </div>
-          
-          <button 
-            className="back-to-results"
-            onClick={() => setSelectedHanja(null)}
-          >
-            검색 결과로 돌아가기
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default HanjaDictionary;
                       key={hanja.id}
                       onClick={() => handleHanjaSelect(hanja)}
                       className="simplified-hanja-item"
@@ -493,30 +414,6 @@ export default HanjaDictionary;
           <div className="detail-meanings">
             <h3 className="meanings-title">
               의미(訓) - 전체 {selectedHanja.meanings.split(';').length}개
-            </h3>
-            <p className="meanings-list">
-              {selectedHanja.meanings.split(';').map((meaning, idx) => (
-                <span key={idx} className="meaning-item">
-                  {meaning}
-                  {idx < selectedHanja.meanings.split(';').length - 1 && ", "}
-                </span>
-              ))}
-            </p>
-          </div>
-          
-          <button 
-            className="back-to-results"
-            onClick={() => setSelectedHanja(null)}
-          >
-            검색 결과로 돌아가기
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default HanjaDictionary;';').length}개
             </h3>
             <p className="meanings-list">
               {selectedHanja.meanings.split(';').map((meaning, idx) => (
