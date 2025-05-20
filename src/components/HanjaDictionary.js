@@ -439,7 +439,7 @@ const HanjaDictionary = ({ hanjaData }) => {
   );
 };
 
-export default HanjaDictionary;';').length}개
+export default HanjaDictionary;
             </h3>
             <p className="meanings-list">
               {selectedHanja.meanings.split(';').map((meaning, idx) => (
