@@ -377,6 +377,114 @@
   color: #666;
 }
 
+/* 필기 인식 관련 스타일 */
+.handwriting-recognition {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.canvas-container {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.drawing-canvas {
+  width: 280px;
+  height: 280px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  cursor: crosshair;
+  background-color: #fff;
+  touch-action: none; /* 모바일에서 스크롤 방지 */
+}
+
+.canvas-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.canvas-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.clear-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.clear-button:hover {
+  background-color: #e0e0e0;
+}
+
+.recognize-button {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.recognize-button:hover {
+  background-color: #2563eb;
+}
+
+.recognize-button:disabled, .clear-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.recognition-results {
+  width: 100%;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.recognition-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.character-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.character-option {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 24px;
+  transition: all 0.2s;
+}
+
+.character-option:hover {
+  transform: scale(1.1);
+  border-color: #3b82f6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 /* 미디어 쿼리 없이 기본 스타일로 적용 */
 /* 모바일 미디어 쿼리는 이미 모바일에서 잘 작동하므로 유지 */
 @media (max-width: 768px) {

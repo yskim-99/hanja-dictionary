@@ -439,4 +439,28 @@ const HanjaDictionary = ({ hanjaData }) => {
   );
 };
 
+export default HanjaDictionary;';').length}개
+            </h3>
+            <p className="meanings-list">
+              {selectedHanja.meanings.split(';').map((meaning, idx) => (
+                <span key={idx} className="meaning-item">
+                  {meaning}
+                  {idx < selectedHanja.meanings.split(';').length - 1 && ", "}
+                </span>
+              ))}
+            </p>
+          </div>
+          
+          <button 
+            className="back-to-results"
+            onClick={() => setSelectedHanja(null)}
+          >
+            검색 결과로 돌아가기
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export default HanjaDictionary;
