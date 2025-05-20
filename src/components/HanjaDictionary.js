@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import './HanjaDictionary.css';
 
-const HanjaDictionary = ({ hanjaData }) => {
+const HanjaDictionary = ({ hanjaData = [] }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchType, setSearchType] = useState('발음(音)');
   const [searchResults, setSearchResults] = useState([]);
@@ -9,8 +9,42 @@ const HanjaDictionary = ({ hanjaData }) => {
   const [showOptions, setShowOptions] = useState(false);
   const searchInputRef = useRef(null);
   
+  // 컴포넌트가 처음 로드될 때 hanjaData 검증
+  React.useEffect(() => {
+    console.log(`HanjaDictionary: 한자 데이터 ${hanjaData.length}개 로드됨`);
+    
+    // 필요시 데이터 구조 로깅
+    if (hanjaData.length > 0) {
+      console.log('데이터 샘플:', hanjaData[0]);
+    }
+  }, [hanjaData]);
+  
+  // 데이터 필드 접근 함수 (TSV 필드 이름이 다를 경우 대비)
+  const getField = (item, fieldName, defaultValue = '') => {
+    // TSV 데이터의 필드명이 다를 경우 매핑
+    const fieldMapping = {
+      'id': ['id', 'ID', 'hanja_id'],
+      'character': ['character', 'hanja', 'char', '漢字'],
+      'pronunciation': ['pronunciation', 'reading', 'sound', '발음', '音'],
+      'meanings': ['meanings', 'meaning', 'definition', '의미', '訓'],
+      'tone': ['tone', 'accent', '성조', '聲調'],
+      'rhymeCategory': ['rhymeCategory', 'rhyme', '운목', '韻目']
+    };
+    
+    // 매핑된 필드명 배열에서 실제 존재하는 필드 찾기
+    const possibleNames = fieldMapping[fieldName] || [fieldName];
+    
+    for (const name of possibleNames) {
+      if (item[name] !== undefined) {
+        return item[name];
+      }
+    }
+    
+    return defaultValue;
+  };
+  
   const handleSearch = () => {
-    if (!searchTerm.trim()) return;
+    if (!searchTerm.trim() || !hanjaData || hanjaData.length === 0) return;
     
     let results = [];
     const term = searchTerm.trim();
@@ -18,13 +52,13 @@ const HanjaDictionary = ({ hanjaData }) => {
     switch (searchType) {
       case '발음(音)':
         results = hanjaData.filter(hanja => 
-          hanja.pronunciation === term
+          getField(hanja, 'pronunciation') === term
         );
         break;
       case '의미(訓)':
         results = hanjaData.filter(hanja => {
           // 의미를 세미콜론으로 분리하여 각 의미별로 확인
-          const meanings = hanja.meanings.split(';');
+          const meanings = getField(hanja, 'meanings').split(';');
           
           // 전처리된 검색어 만들기
           const noSpaceTerm = term.replace(/\s+/g, ''); // 공백 제거
@@ -76,8 +110,8 @@ const HanjaDictionary = ({ hanjaData }) => {
         
         // 검색 결과 정렬 (관련성 높은 순)
         results.sort((a, b) => {
-          const meaningsA = a.meanings.split(';');
-          const meaningsB = b.meanings.split(';');
+          const meaningsA = getField(a, 'meanings').split(';');
+          const meaningsB = getField(b, 'meanings').split(';');
           
           // 관련성 점수 계산 함수
           const calculateRelevance = (meaning) => {
@@ -119,13 +153,14 @@ const HanjaDictionary = ({ hanjaData }) => {
         if (term === '共') {
           // '共'을 검색하는 경우 평측겸용자만 표시
           results = hanjaData.filter(hanja => 
-            hanja.rhymeCategory === '共'
+            getField(hanja, 'rhymeCategory') === '共'
           );
         } else {
           // 운목에 검색어가 포함된 모든 항목을 표시 (1글자 이상의 운목도 포함)
-          results = hanjaData.filter(hanja => 
-            hanja.rhymeCategory.includes(term) && hanja.rhymeCategory !== '共'
-          );
+          results = hanjaData.filter(hanja => {
+            const rhymeCategory = getField(hanja, 'rhymeCategory');
+            return rhymeCategory.includes(term) && rhymeCategory !== '共';
+          });
         }
         break;
       default:
@@ -137,19 +172,19 @@ const HanjaDictionary = ({ hanjaData }) => {
     setSelectedHanja(null);
   };
 
+  // 검색 입력 시 엔터키 처리
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+  
   // 검색어 초기화 처리
   const handleClearSearch = () => {
     setSearchTerm('');
     // 검색창에 포커스 주기
     if (searchInputRef.current) {
       searchInputRef.current.focus();
-    }
-  };
-
-  // 검색 입력 시 엔터키 처리
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch();
     }
   };
 
@@ -187,15 +222,15 @@ const HanjaDictionary = ({ hanjaData }) => {
   // 결과 정렬 (평성, 측성, 공용 순으로)
   const sortedResults = [...searchResults].sort((a, b) => {
     // 먼저 성조 그룹으로 정렬
-    const toneGroupA = getToneGroup(a.tone);
-    const toneGroupB = getToneGroup(b.tone);
+    const toneGroupA = getToneGroup(getField(a, 'tone'));
+    const toneGroupB = getToneGroup(getField(b, 'tone'));
     
     if (toneGroupA !== toneGroupB) {
       return toneGroupA - toneGroupB;
     }
     
     // 같은 성조 그룹 내에서 발음(音)의 가나다 순으로 정렬
-    return a.pronunciation.localeCompare(b.pronunciation, 'ko');
+    return getField(a, 'pronunciation').localeCompare(getField(b, 'pronunciation'), 'ko');
   });
 
   // 성조에 따른 CSS 클래스
@@ -301,7 +336,7 @@ const HanjaDictionary = ({ hanjaData }) => {
           </h2>
           
           {/* 평성 결과 - 간략 표시 */}
-          {sortedResults.some(hanja => hanja.tone === '平') && (
+          {sortedResults.some(hanja => getField(hanja, 'tone') === '平') && (
             <div className="tone-group">
               <h3 className="tone-title">
                 <span className="tone-indicator ping"></span>
@@ -310,15 +345,15 @@ const HanjaDictionary = ({ hanjaData }) => {
               
               <div className="simplified-results">
                 {sortedResults
-                  .filter(hanja => hanja.tone === '平')
+                  .filter(hanja => getField(hanja, 'tone') === '平')
                   .map(hanja => (
                     <div 
-                      key={hanja.id}
+                      key={getField(hanja, 'id')}
                       onClick={() => handleHanjaSelect(hanja)}
                       className="simplified-hanja-item"
                     >
-                      <span className="hanja-char">{hanja.character}</span>
-                      <span className="hanja-pronunciation">({hanja.pronunciation})</span>
+                      <span className="hanja-char">{getField(hanja, 'character')}</span>
+                      <span className="hanja-pronunciation">({getField(hanja, 'pronunciation')})</span>
                     </div>
                   ))
                 }
@@ -327,7 +362,7 @@ const HanjaDictionary = ({ hanjaData }) => {
           )}
           
           {/* 측성 결과 - 간략 표시 */}
-          {sortedResults.some(hanja => ['上', '去', '入'].includes(hanja.tone)) && (
+          {sortedResults.some(hanja => ['上', '去', '入'].includes(getField(hanja, 'tone'))) && (
             <div className="tone-group">
               <h3 className="tone-title">
                 <span className="tone-indicator ceok"></span>
@@ -336,15 +371,15 @@ const HanjaDictionary = ({ hanjaData }) => {
               
               <div className="simplified-results">
                 {sortedResults
-                  .filter(hanja => ['上', '去', '入'].includes(hanja.tone))
+                  .filter(hanja => ['上', '去', '入'].includes(getField(hanja, 'tone')))
                   .map(hanja => (
                     <div 
-                      key={hanja.id}
+                      key={getField(hanja, 'id')}
                       onClick={() => handleHanjaSelect(hanja)}
                       className="simplified-hanja-item"
                     >
-                      <span className="hanja-char">{hanja.character}</span>
-                      <span className="hanja-pronunciation">({hanja.pronunciation} - {getToneDisplay(hanja.tone)})</span>
+                      <span className="hanja-char">{getField(hanja, 'character')}</span>
+                      <span className="hanja-pronunciation">({getField(hanja, 'pronunciation')} - {getToneDisplay(getField(hanja, 'tone'))})</span>
                     </div>
                   ))
                 }
@@ -353,7 +388,7 @@ const HanjaDictionary = ({ hanjaData }) => {
           )}
           
           {/* 평측겸용 결과 - 간략 표시 */}
-          {sortedResults.some(hanja => hanja.tone === '共') && (
+          {sortedResults.some(hanja => getField(hanja, 'tone') === '共') && (
             <div className="tone-group">
               <h3 className="tone-title">
                 <span className="tone-indicator dual"></span>
@@ -362,15 +397,15 @@ const HanjaDictionary = ({ hanjaData }) => {
               
               <div className="simplified-results">
                 {sortedResults
-                  .filter(hanja => hanja.tone === '共')
+                  .filter(hanja => getField(hanja, 'tone') === '共')
                   .map(hanja => (
                     <div 
-                      key={hanja.id}
+                      key={getField(hanja, 'id')}
                       onClick={() => handleHanjaSelect(hanja)}
                       className="simplified-hanja-item dual"
                     >
-                      <span className="hanja-char">{hanja.character}</span>
-                      <span className="hanja-pronunciation">({hanja.pronunciation} - 평측겸용)</span>
+                      <span className="hanja-char">{getField(hanja, 'character')}</span>
+                      <span className="hanja-pronunciation">({getField(hanja, 'pronunciation')} - 평측겸용)</span>
                     </div>
                   ))
                 }
@@ -391,35 +426,35 @@ const HanjaDictionary = ({ hanjaData }) => {
           
           <div className="detail-header">
             <div className="detail-character">
-              <span>{selectedHanja.character}</span>
+              <span>{getField(selectedHanja, 'character')}</span>
             </div>
             
             <div className="detail-info">
               <div className="detail-pronunciation">
-                <span className={`tone-badge ${getToneClass(selectedHanja.tone)}`}>
-                  {selectedHanja.pronunciation} ({getToneDisplay(selectedHanja.tone)})
+                <span className={`tone-badge ${getToneClass(getField(selectedHanja, 'tone'))}`}>
+                  {getField(selectedHanja, 'pronunciation')} ({getToneDisplay(getField(selectedHanja, 'tone'))})
                 </span>
               </div>
               
               <div className="detail-rhyme">
-                운목(韻目): <span className="rhyme-value">{selectedHanja.rhymeCategory}</span>
+                운목(韻目): <span className="rhyme-value">{getField(selectedHanja, 'rhymeCategory')}</span>
               </div>
               
               <div className="detail-id">
-                ID: <span>{selectedHanja.id}</span>
+                ID: <span>{getField(selectedHanja, 'id')}</span>
               </div>
             </div>
           </div>
           
           <div className="detail-meanings">
             <h3 className="meanings-title">
-              의미(訓) - 전체 {selectedHanja.meanings.split(';').length}개
+              의미(訓) - 전체 {getField(selectedHanja, 'meanings').split(';').length}개
             </h3>
             <p className="meanings-list">
-              {selectedHanja.meanings.split(';').map((meaning, idx) => (
+              {getField(selectedHanja, 'meanings').split(';').map((meaning, idx) => (
                 <span key={idx} className="meaning-item">
                   {meaning}
-                  {idx < selectedHanja.meanings.split(';').length - 1 && ", "}
+                  {idx < getField(selectedHanja, 'meanings').split(';').length - 1 && ", "}
                 </span>
               ))}
             </p>

@@ -1,0 +1,230 @@
+.home-screen {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 표지 영역 */
+.cover-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.cover-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
+}
+
+.dictionary-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.dictionary-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* 정보 버튼 영역 */
+.info-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.info-button {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.info-button:hover {
+  background-color: #e0e0e0;
+}
+
+.info-button.active {
+  background-color: #3b82f6;
+  color: white;
+}
+
+/* 정보 패널 */
+.info-panel {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.info-panel h2 {
+  font-size: 20px;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.info-panel ol, .info-panel ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.info-panel li {
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.info-panel li:last-child {
+  margin-bottom: 0;
+}
+
+.info-panel ul li {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.tips {
+  font-size: 14px;
+  color: #666;
+  margin-top: 15px;
+  font-style: italic;
+}
+
+/* 성조 색상 표시 */
+.ping-color {
+  color: #ffaa55;
+  font-weight: 500;
+}
+
+.ceok-color {
+  color: #5599ff;
+  font-weight: 500;
+}
+
+.dual-color {
+  color: #ff5555;
+  font-weight: 500;
+}
+
+/* 비밀번호 영역 */
+.password-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.password-input-wrapper {
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.password-input-wrapper label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+.password-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 6px;
+}
+
+.password-input::placeholder {
+  letter-spacing: normal;
+  font-size: 16px;
+}
+
+.enter-button {
+  padding: 12px 30px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.enter-button:hover {
+  background-color: #2563eb;
+}
+
+.enter-button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #e53e3e;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* 저작권 정보 */
+.copyright {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  margin-top: 30px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .dictionary-title {
+    font-size: 24px;
+  }
+  
+  .dictionary-subtitle {
+    font-size: 14px;
+  }
+  
+  .info-button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .info-panel {
+    padding: 15px;
+  }
+  
+  .info-panel h2 {
+    font-size: 18px;
+  }
+  
+  .password-input {
+    max-width: 250px;
+  }
+  
+  .enter-button {
+    padding: 10px 24px;
+  }
+}

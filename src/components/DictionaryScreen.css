@@ -1,0 +1,258 @@
+.dictionary-screen {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dictionary-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 10px;
+  margin-right: auto;
+}
+
+.logout-button,
+.change-password-button {
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logout-button:hover,
+.change-password-button:hover {
+  background-color: #e0e0e0;
+}
+
+.change-password-button {
+  background-color: #e8f0fe;
+  color: #3b82f6;
+}
+
+.change-password-button:hover {
+  background-color: #d0e3ff;
+}
+
+.dictionary-screen-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 auto;
+  text-align: center;
+  color: #333;
+}
+
+.dictionary-container {
+  margin-bottom: 30px;
+}
+
+.dictionary-footer {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+/* 비밀번호 변경 모달 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.password-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+  font-size: 18px;
+  margin: 0;
+  color: #333;
+}
+
+.close-modal-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-modal-button:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.password-field {
+  margin-bottom: 16px;
+}
+
+.password-field label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+.password-field input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.password-field input:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+.password-message {
+  margin: 12px 0;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.password-message.error {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.password-message.success {
+  background-color: #d1fae5;
+  color: #047857;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 20px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+  gap: 10px;
+}
+
+.cancel-button,
+.change-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+
+.change-button {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.change-button:hover {
+  background-color: #2563eb;
+}
+
+.change-button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+/* 로딩 인디케이터 */
+.loading-indicator {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #e53e3e;
+  background-color: #fee2e2;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .dictionary-screen {
+    padding: 15px;
+  }
+  
+  .dictionary-header {
+    margin-bottom: 15px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .header-buttons {
+    width: 100%;
+    justify-content: space-between;
+    margin-right: 0;
+  }
+  
+  .dictionary-screen-title {
+    font-size: 20px;
+    margin-top: 10px;
+  }
+  
+  .logout-button,
+  .change-password-button {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}

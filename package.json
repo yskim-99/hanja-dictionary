@@ -1,5 +1,5 @@
 {
-  "homepage" : "https://yskim-99.github.io/hanja-dictionary",
+  "homepage": "https://yskim-99.github.io/hanja-dictionary",
   "name": "hanja-dictionary",
   "version": "0.1.0",
   "private": true,
@@ -8,8 +8,10 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "hanzi-writer": "^3.7.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -17,8 +19,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
