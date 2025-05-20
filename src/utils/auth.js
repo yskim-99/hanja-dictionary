@@ -3,6 +3,9 @@
 // 비밀번호 초기값 - localStorage에 저장되어 있지 않을 경우 사용됨
 const DEFAULT_PASSWORD = "4778";
 
+// 관리자 비밀번호 (이 비밀번호를 아는 사람만 비밀번호 변경 가능)
+const ADMIN_PASSWORD = "0920";
+
 // 비밀번호 가져오기
 export const getPassword = () => {
   try {
@@ -16,9 +19,19 @@ export const getPassword = () => {
   }
 };
 
+// 관리자 비밀번호 확인
+export const checkAdminPassword = (inputPassword) => {
+  return inputPassword === ADMIN_PASSWORD;
+};
+
 // 비밀번호 변경
-export const changePassword = (newPassword) => {
+export const changePassword = (newPassword, adminPassword) => {
   try {
+    // 관리자 비밀번호 검증
+    if (!checkAdminPassword(adminPassword)) {
+      return { success: false, message: '관리자 비밀번호가 올바르지 않습니다.' };
+    }
+    
     // 새 비밀번호가 4자리 숫자인지 검증
     if (/^\d{4}$/.test(newPassword)) {
       localStorage.setItem('hanjaDictionaryPassword', newPassword);

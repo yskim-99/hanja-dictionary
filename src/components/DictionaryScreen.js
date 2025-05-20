@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HanjaDictionary from './HanjaDictionary';
-import { clearAuthentication, changePassword, getPassword } from '../utils/auth';
+import { clearAuthentication, changePassword, getPassword, checkAdminPassword } from '../utils/auth';
 import './DictionaryScreen.css';
 
 const DictionaryScreen = () => {
@@ -14,7 +14,7 @@ const DictionaryScreen = () => {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
   const [passwordMessage, setPasswordMessage] = useState({ text: '', type: '' });
   
   // TSV 파일 불러오기
@@ -73,7 +73,7 @@ const DictionaryScreen = () => {
     setShowPasswordModal(true);
     setNewPassword('');
     setConfirmPassword('');
-    setCurrentPassword('');
+    setAdminPassword('');
     setPasswordMessage({ text: '', type: '' });
   };
   
@@ -93,15 +93,6 @@ const DictionaryScreen = () => {
   
   // 비밀번호 변경 처리
   const handleChangePassword = () => {
-    // 현재 비밀번호 확인
-    if (currentPassword !== getPassword()) {
-      setPasswordMessage({ 
-        text: '현재 비밀번호가 올바르지 않습니다.', 
-        type: 'error' 
-      });
-      return;
-    }
-    
     // 새 비밀번호 유효성 검사
     if (newPassword.length !== 4) {
       setPasswordMessage({ 
@@ -120,8 +111,8 @@ const DictionaryScreen = () => {
       return;
     }
     
-    // 비밀번호 변경
-    const result = changePassword(newPassword);
+    // 관리자 비밀번호 확인 후 비밀번호 변경
+    const result = changePassword(newPassword, adminPassword);
     
     if (result.success) {
       setPasswordMessage({ 
@@ -176,7 +167,7 @@ const DictionaryScreen = () => {
       </div>
       
       <div className="dictionary-footer">
-        <p>© 2024 한자 평측사전. All rights reserved.</p>
+        <p>© 2025 한자 평측사전 by Y. S. Kim</p>
       </div>
       
       {/* 비밀번호 변경 모달 */}
@@ -195,16 +186,16 @@ const DictionaryScreen = () => {
             
             <div className="modal-body">
               <div className="password-field">
-                <label htmlFor="current-password">현재 비밀번호</label>
+                <label htmlFor="admin-password">관리자 비밀번호</label>
                 <input
-                  id="current-password"
+                  id="admin-password"
                   type="password"
                   inputMode="numeric"
                   pattern="[0-9]*"
                   maxLength="4"
-                  value={currentPassword}
-                  onChange={(e) => handlePasswordInput(e, setCurrentPassword)}
-                  placeholder="현재 비밀번호 입력"
+                  value={adminPassword}
+                  onChange={(e) => handlePasswordInput(e, setAdminPassword)}
+                  placeholder="관리자 비밀번호 입력"
                 />
               </div>
               
@@ -253,7 +244,7 @@ const DictionaryScreen = () => {
               <button 
                 className="change-button"
                 onClick={handleChangePassword}
-                disabled={!currentPassword || !newPassword || !confirmPassword || newPassword.length !== 4}
+                disabled={!adminPassword || !newPassword || !confirmPassword || newPassword.length !== 4}
               >
                 변경하기
               </button>
