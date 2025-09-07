@@ -43,6 +43,22 @@ const HanjaDictionary = ({ hanjaData = [] }) => {
     return defaultValue;
   };
   
+  // 검색 입력창 placeholder 텍스트 반환 함수
+  const getPlaceholderText = () => {
+    switch (searchType) {
+      case '발음(音)':
+        return '발음을 입력하세요 (예: 학, 교)';
+      case '의미(訓)':
+        return '의미를 입력하세요 (예: 배우다, 학교)';
+      case '운목(韻目)':
+        return '운목을 입력하세요 (예: 東, 共)';
+      case '한자(字)':
+        return '한자를 직접 입력하세요 (예: 學, 校)';
+      default:
+        return '검색어 입력...';
+    }
+  };
+  
   const handleSearch = () => {
     if (!searchTerm.trim() || !hanjaData || hanjaData.length === 0) return;
     
@@ -163,6 +179,20 @@ const HanjaDictionary = ({ hanjaData = [] }) => {
           });
         }
         break;
+      case '한자(字)':
+        // 한자 직접 입력 검색
+        results = hanjaData.filter(hanja => {
+          const character = getField(hanja, 'character');
+          
+          // 1. 단일 한자 검색: 정확히 일치하는 경우
+          if (term.length === 1) {
+            return character === term;
+          }
+          
+          // 2. 여러 한자 검색: 입력한 한자들이 모두 포함되는지 확인
+          return term.split('').every(inputChar => character === inputChar);
+        });
+        break;
       default:
         break;
     }
@@ -250,7 +280,7 @@ const HanjaDictionary = ({ hanjaData = [] }) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="검색어 입력..."
+            placeholder={getPlaceholderText()}
             className="search-input"
             ref={searchInputRef}
           />
@@ -314,6 +344,19 @@ const HanjaDictionary = ({ hanjaData = [] }) => {
                     {searchType === '운목(韻目)' && <div className="radio-dot"></div>}
                   </div>
                   <span>운목(韻目)</span>
+                </div>
+                
+                <div 
+                  onClick={() => {
+                    setSearchType('한자(字)');
+                    setShowOptions(false);
+                  }}
+                  className="option-item"
+                >
+                  <div className={`radio-button ${searchType === '한자(字)' ? 'selected' : ''}`}>
+                    {searchType === '한자(字)' && <div className="radio-dot"></div>}
+                  </div>
+                  <span>한자(字)</span>
                 </div>
               </div>
             )}

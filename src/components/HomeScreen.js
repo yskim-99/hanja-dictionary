@@ -169,40 +169,14 @@ const HomeScreen = () => {
                   </ul>
                 </li>
                 <li>
+                  <strong>한자(字)로 검색:</strong> 검색 유형을 '한자(字)'로 선택하고 한자를 직접 입력합니다.
+                  <ul>
+                    <li>예: '學'자의 정보를 찾으려면 '學'을 입력합니다.</li>
+                    <li>여러 한자를 한 번에 검색할 수도 있습니다. (예: '學校')</li>
+                  </ul>
+                </li>
+                <li>
                   <strong>검색 결과 확인:</strong> 검색 결과는 평성, 측성, 평측겸용으로 구분되어 표시됩니다.
                   <ul>
                     <li>각 한자를 클릭하여 상세 정보를 확인할 수 있습니다.</li>
                   </ul>
-                </li>
-              </ol>
-              <p className="tips">* 검색어는 정확히 입력해야 합니다. 부분 검색은 지원하지 않습니다.</p>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* 일러두기 모달 */}
-      {showNotice && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={e => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2>일러두기</h2>
-              <button className="close-button" onClick={closeModal}>×</button>
-            </div>
-            <div className="modal-body">
-              <ul>
-                <li>이 사전은 한자의 사성(四聲)과 의미 정보 검색에 특화된 사전이므로, 이 사전에 표기하지 않은 정보(예; 부수, 획수, 용례 등)는 다른 옥편이나 자전을 참고하시기 바랍니다.</li>
-                <li>검색 결과는 평성, 측성(상성, 거성, 입성), 평측겸용 순으로 정렬되며, 평성은 <span className="ping-color">주황색</span>, 측성은 <span className="ceok-color">파란색</span>, 평측겸용은 <span className="dual-color">빨간색</span>으로 표시됩니다.</li>
-                <li>의미와 운목 검색의 결과는 한글 발음의 가나다 순으로 정렬하였습니다.</li>
-                <li>수록된 한자의 평측과 의미는 동아출판사의 '동아 백년옥편'을 참고하였습니다.</li>
-                <li>오류나 개선을 위한 제안 등은 개발자(dsatkim@naver.com)에게 문의 바랍니다.</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default HomeScreen;
